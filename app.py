@@ -7,7 +7,7 @@ app = Flask(__name__)
 api = Api(app)
 
 api.add_resource(Voters, '/api/voters')
-api.add_resource(Voter, '/api/voters/<int:voter_id>')
+api.add_resource(Voter, '/api/voters/<int:voter_id>/masked-iden-num')
 
 if __name__ == '__main__':
     app.run(debug=True)

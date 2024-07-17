@@ -2,6 +2,7 @@ from flask import request
 from flask_restful import Resource
 
 from db import *
+from deg_config import iden_num_len
 
 
 class Voters(Resource):
@@ -13,6 +14,7 @@ class Voters(Resource):
             firstname = request_json.get('firstname')
             lastname = request_json.get('lastname')
             data = get_voter_id_by_name(firstname, lastname)
+            data.setdefault("iden_num_len", iden_num_len)
         else:
             data = get_all_voters()
 

@@ -50,5 +50,6 @@ def get_voter_id_by_name(firstname: str, lastname: str):
     """Get voter id by name from database"""
 
     request = "SELECT id FROM voters WHERE firstname=%s AND lastname=%s;"
-    data = execute_select_request(request, (firstname, lastname))
-    return data[0][0] if data else None
+    data = {}
+    data.setdefault("id", execute_select_request(request, (firstname, lastname))[0][0])
+    return data if data else None
