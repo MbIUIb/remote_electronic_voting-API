@@ -9,7 +9,7 @@ api = Api(app)
 api.add_resource(VotersInformation, '/api/voters/info')
 api.add_resource(Voter, '/api/voters/<int:voter_id>/masked-iden-num')
 api.add_resource(VoterRegistration, '/api/voters/registration')
-api.add_resource(VoterAuthentication, '/api/voters/authetication')
+api.add_resource(VoterAuthentication, '/api/voters/authentication')
 
 if __name__ == '__main__':
     app.run(debug=True)
