@@ -62,7 +62,7 @@ class VoterRegistration(Resource):
             request_json = request.get_json()
             firstname = request_json.get('firstname')
             lastname = request_json.get('lastname')
-            password = request_json.get('pass')
+            password = request_json.get('password')
 
             voter_registration(firstname, lastname, password)
             return {"successful": "true"}, 200
@@ -80,7 +80,7 @@ class VoterAuthentication(Resource):
             request_json = request.get_json()
             firstname = request_json.get('firstname')
             lastname = request_json.get('lastname')
-            password = request_json.get('pass')
+            password = request_json.get('password')
 
             return {"successful": voter_authentication(firstname, lastname, password)}, 200
         else:
