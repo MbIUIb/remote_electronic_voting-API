@@ -6,7 +6,8 @@ from deg_config import iden_num_len
 
 
 class VotersInformation(Resource):
-    def get(self):
+    @staticmethod
+    def get():
         """Get voters information
         GET: {"firstname": "Ivan", "lastname":"Ivanov"}
         RESPONSE: {"id": 1, "iden_num_len": 10}
@@ -24,22 +25,9 @@ class VotersInformation(Resource):
         return (data, 200) if data else ({'warning': 'Voter not exist'}, 404)
 
 
-class Voter(Resource):
-    """test"""
-    def get(self, voter_id):
-        firstname, lastname = get_voter_name_by_id(voter_id)
-        return ({'firstname': firstname, 'lastname': lastname}, 200) if firstname and lastname \
-            else ({'warning': 'Voter not exist'}, 404)
-
-    def post(self, voter_id):
-        if request.get_data():
-            data = request.get_json()
-            rec_voter_id = data.get('voter_id')
-            masked_iden_num = data.get('masked_iden_num')
-
-
 class VoterRegistration(Resource):
-    def get(self):
+    @staticmethod
+    def get():
         """Checking the voter's existence in database
         GET: {"firstname": "Ivan", "lastname":"Ivanov"}
         RESPONSE: {"exist": true}"""
@@ -49,11 +37,12 @@ class VoterRegistration(Resource):
             firstname = request_json.get('firstname')
             lastname = request_json.get('lastname')
 
-            return {"exist": voter_exists(firstname, lastname)}, 200
+            return {"exists": voter_exists(firstname, lastname)}, 200
         else:
             return {"warning": "bad request"}, 404
 
-    def post(self):
+    @staticmethod
+    def post():
         """Voter registration: adding to database
         POST: {"firstname": "Ivan1", "lastname":"Ivanov1", "pass":"password123"}
         RESPONSE: {"successful": true}"""
@@ -71,7 +60,8 @@ class VoterRegistration(Resource):
 
 
 class VoterAuthentication(Resource):
-    def get(self):
+    @staticmethod
+    def get():
         """Checking voter's credentials
         GET {"firstname": "Ivan1", "lastname":"Ivanov1", "pass":"password123"}
         RESPONSE: {"successful": true}"""
@@ -85,3 +75,26 @@ class VoterAuthentication(Resource):
             return {"successful": voter_authentication(firstname, lastname, password)}, 200
         else:
             return {"warning": "bad request"}, 404
+
+
+class M1(Resource):
+    def get(self):
+        if request.get_data():
+            request_json = request.get_json()
+            n_id = request_json.get('n_id')
+
+            return {"M_1": get_m1_by_n_id(n_id)}, 200
+        else:
+            return {"successful": "false"}, 404
+
+    def post(self):
+        if request.get_data():
+            request_json = request.get_json()
+            encrypted_iden_num = request_json.get('encrypted_iden_num')
+            n_id = request_json.get('n_id')
+            external_n_id = request_json.get('external_n_id')
+
+            insert_m1(encrypted_iden_num, n_id, external_n_id)
+            return {"successful": "true"}, 200
+        else:
+            return {"successful": "false"}, 404

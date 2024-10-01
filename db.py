@@ -86,11 +86,6 @@ def get_voter_id_by_name(firstname: str, lastname: str):
     return data if data else None
 
 
-def insert_masked_iden_num(masked_iden_num: int):
-    """test"""
-    request = "INSERT INTO voters (masked_iden_num) VALUES (%s);"
-
-
 def voter_exists(firstname, lastname):
     """Return True if voter exists or False otherwise"""
 
@@ -106,3 +101,18 @@ def voter_registration(firstname, lastname, password):
 def voter_authentication(firstname, lastname, password):
     request = "SELECT EXISTS (SELECT true FROM voters WHERE firstname=%s AND lastname=%s AND password=%s);"
     return execute_select_request(request, (firstname, lastname, password))[0][0]
+
+
+def insert_m1(encrypted_iden_num: str, n_id: int, external_n_id: int):
+    request = "INSERT INTO m1 (encrypted_iden_num, n_id, external_n_id) VALUES (%s, %s, %s);"
+    execute_insert_request(request, (encrypted_iden_num, n_id, external_n_id))
+
+
+def get_m1_by_id(m1_id: int):
+    request = "SELECT * from m1 WHERE id=%s"
+    return execute_select_request(request, (m1_id,))[0]
+
+
+def get_m1_by_n_id(n_id: int):
+    request = "SELECT * from m1 WHERE n_id=%s OR external_n_id=%s"
+    return execute_select_request(request, (str(n_id), n_id))
